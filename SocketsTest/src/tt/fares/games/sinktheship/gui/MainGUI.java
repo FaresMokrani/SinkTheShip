@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class MainGUI {
 	
@@ -28,10 +29,20 @@ public class MainGUI {
 	private JMenu optionMenu;
 	private JMenuItem menuItem;
 	
-	//mode choice screen
+	//mode menu screen
 	private JLabel modeChoiceLabel;
 	private JButton pveModeButton;
 	private JButton pvpModeButton;
+	
+	//options menu screen
+	private JLabel nmbOfShipsLbl;
+	private JLabel sizeOfShipLbl;
+	private JLabel nameOfShipLbl;
+	private JLabel slateSizeLbl;
+	private JRadioButton nmbOfShipsRadio;
+	private JRadioButton slateSizeRadio;
+	private JRadioButton sizeOfShipRadio;
+	
 	
 	//game screen
 	private JLabel turnLabel;
