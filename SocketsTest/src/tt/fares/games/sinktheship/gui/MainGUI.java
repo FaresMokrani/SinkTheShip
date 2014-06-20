@@ -93,6 +93,7 @@ public class MainGUI {
 	//game helpers
 	public GameHelper gameHelper;
 	public int nmbOfTries;
+	public int nmbOfHitShips = 0;
 	
 	public static void main(String[] args){
 		MainGUI mainGUI = new MainGUI();
@@ -347,24 +348,42 @@ public class MainGUI {
 						temp.setText("X");
 					}
 					temp.setEnabled(false);
-					nmbOfTries--;
-					if (nmbOfTries == 0){
-						JOptionPane.showMessageDialog(mainWindow, "You used up all your canon balls!","Inane Warning", JOptionPane.WARNING_MESSAGE);
-					}
+					checkNmbOfTries();
 				}
 			});
 		}
 	}
 	
+	//Checks if the boats were hit or sunk
 	void hitsCounter(int boxNumber){
 		for(Ship ship: gameHelper.battleShips){
 			if (ship.hasLocation(boxNumber)){
-				
+				if(ship.isSunk()){
+					nmbOfHitShips++;
+					JOptionPane.showMessageDialog(mainWindow, "You just sunk: "+ ship.name);
+					if(nmbOfHitShips == nmbOfShips){
+						JOptionPane.showMessageDialog(mainWindow, "Congratulation !!! You destroyed all your enemey's ships");
+						disableSlate();
+					}
+				}
 			}
 		}
 	}
 	
-	boolean isHit(String slateBox){
-		return false;
+	//Disable all the buttons on the slate
+	void disableSlate(){
+		for(JButton button:gameSlate){
+			button.setEnabled(false);
+			//to do: initiate the result screen
+		}
+	}
+	
+	//checks the number of tries the player used up
+	void checkNmbOfTries(){
+		nmbOfTries--;
+		if (nmbOfTries == 0){
+			JOptionPane.showMessageDialog(mainWindow, "You used up all your canon balls!","Inane Warning", JOptionPane.WARNING_MESSAGE);
+			disableSlate();
+		}
 	}
 }

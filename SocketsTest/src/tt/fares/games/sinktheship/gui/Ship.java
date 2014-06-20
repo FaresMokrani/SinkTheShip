@@ -5,11 +5,13 @@ public class Ship {
 	public int size = 0;
 	public String name;
 	public int[] location;
+	public int hitsNumber;
 	
 	public Ship(String name, int size){
 		this.name = name;
 		this.size = size;
 		location = new int[size];
+		this.hitsNumber = 0;
 	}
 	
 	public void setSize(int size){
@@ -49,10 +51,19 @@ public class Ship {
 		for (int spot: location){
 			if (spot == hitLocation){
 				hasLocation = true;
+				hitsNumber++;
 			} else {
 				hasLocation = false;
 			}
 		}
 		return hasLocation;
+	}
+	
+	public boolean isSunk(){
+		if (hitsNumber < this.size){
+			return false;
+		}else{
+			return true;
+		}
 	}
 }
