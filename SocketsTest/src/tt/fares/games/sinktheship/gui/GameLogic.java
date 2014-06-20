@@ -23,13 +23,14 @@ public class GameLogic {
 		int placementPace = 0;
 		boolean shipPlaced = true;
 		int[] locationHolder = new int[ship.size];
+		int tableWidth = (int) Math.sqrt(gameSlateSize);
 
 		int vertOrientation = (int) (Math.random() * 2); // ship orientation horizontal = 0, vertical = 1
 
 		if (vertOrientation == 0) {
 			placementPace = 1;
 		} else {
-			placementPace = (int) Math.sqrt(gameSlateSize);
+			placementPace = tableWidth;
 		}
 		System.out.println("ship orientation: " + vertOrientation);
 		System.out.println("placement pace: " + placementPace);
@@ -45,7 +46,7 @@ public class GameLogic {
 					break;
 				}
 				if ((vertOrientation == 0)
-						&& (currentSpot % placementPace == 4)
+						&& (currentSpot % tableWidth == 4)
 						&& (shipLengthCnt < ship.size - 1)) {
 					triesCnt++;
 					shipPlaced = false;

@@ -43,4 +43,16 @@ public class Ship {
 	public int[] getLocation(){
 		return this.location;
 	}
+	
+	public boolean hasLocation(int hitLocation){
+		boolean hasLocation = false;
+		for (int spot: location){
+			if (spot == hitLocation){
+				hasLocation = true;
+			} else {
+				hasLocation = false;
+			}
+		}
+		return hasLocation;
+	}
 }

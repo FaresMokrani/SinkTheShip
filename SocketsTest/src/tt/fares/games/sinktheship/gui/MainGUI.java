@@ -1,6 +1,7 @@
 package tt.fares.games.sinktheship.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -48,7 +50,6 @@ public class MainGUI {
 	private JRadioButton fourShipsRadio;
 	private JRadioButton fiveShipsRadio;
 	private ButtonGroup slateSizeRadioGroup;
-	private JRadioButton slate3x3Radio;
 	private JRadioButton slate5x5Radio;
 	private JRadioButton slate7x7Radio;
 	private JButton optionSubmit1;
@@ -56,14 +57,10 @@ public class MainGUI {
 	//options menu screen2
 	private JLabel optionTitleLbl2;
 	private JLabel nameOfShipLbl;
-	private JLabel sizeOfShipLbl;
 	private JTextField[] namesOfShipsTF;
 	private JLabel[] shipsNumbersLbl;
 	private ButtonGroup[] sizeOfShipRadioGroup;
 	private JRadioButton[] sizeRadios;
-	private JRadioButton size3Radio;
-	private JRadioButton size4Radio;
-	private JRadioButton size5Radio;
 	private JButton optionSubmit2;
 	
 	
@@ -93,7 +90,9 @@ public class MainGUI {
 	private int slateSize = 0;
 	private String[] namesOfShips;
 	
-	
+	//game helpers
+	public GameHelper gameHelper;
+	public int nmbOfTries;
 	
 	public static void main(String[] args){
 		MainGUI mainGUI = new MainGUI();
@@ -195,9 +194,11 @@ public class MainGUI {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(slate5x5Radio.isSelected()){
-					slateSize = 9;
-				} else if(slate5x5Radio.isSelected()){
 					slateSize = 25;
+					nmbOfTries = 17;
+				}else if(slate7x7Radio.isSelected()){
+					slateSize = 49;
+					nmbOfTries = 25;
 				}
 				if(threeShipsRadio.isSelected()){
 					nmbOfShips = 3;
@@ -316,15 +317,54 @@ public class MainGUI {
 	}
 	
 	void initGameSlate(){
-		gameSlatePanel = new JPanel(new GridLayout(0,5));
+		int nmbOfColumns = (int)(Math.sqrt(slateSize));
 		
-		gameSlate = new JButton[25];
+		gameSlatePanel = new JPanel(new GridLayout(0,nmbOfColumns));
+		
+		gameSlate = new JButton[slateSize];
+		
+		//start the game helper that will set the ships on the slate (by instantiating GameLogic class)
+		gameHelper = new GameHelper(slateSize, nmbOfShips, sizesOfShips, namesOfShips);
 		
 		for(int i = 0; i < gameSlate.length; i++){
 			gameSlate[i] = new JButton();
 			gameSlate[i].setPreferredSize(SLATE_BOX_SIZE);
+			gameSlate[i].setName(String.valueOf(i));
 			gameSlatePanel.add(gameSlate[i]);
+			
+			gameSlate[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					//get the Button that triggered the event
+					JButton temp = (JButton)e.getSource();
+					int boxNumber = Integer.parseInt(temp.getName());
+					System.out.println("Ships name: "+temp.getName());
+					if(gameHelper.gameLogic.gameSlateMap[boxNumber] == 1){
+						temp.setText("O");
+						hitsCounter(boxNumber);
+					}else{
+						temp.setText("X");
+					}
+					temp.setEnabled(false);
+					nmbOfTries--;
+					if (nmbOfTries == 0){
+						JOptionPane.showMessageDialog(mainWindow, "You used up all your canon balls!","Inane Warning", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			});
 		}
-		
+	}
+	
+	void hitsCounter(int boxNumber){
+		for(Ship ship: gameHelper.battleShips){
+			if (ship.hasLocation(boxNumber)){
+				
+			}
+		}
+	}
+	
+	boolean isHit(String slateBox){
+		return false;
 	}
 }
